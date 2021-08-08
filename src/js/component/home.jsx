@@ -6,14 +6,56 @@ const Home = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [entradas, setEntradas] = useState([]);
 
+	// =============== API code ===============/
+
+	//::::: remember to add the .label from the api object to index {index.label}, to add the list items from the api to the UI ::://
+	//________ getTodos will consume the Api__________//
+	function getTodos() {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/todo_leon")
+			.then(respuesta => respuesta.json())
+			.then(respuesta => {
+				console.log(respuesta);
+				setEntradas(respuesta);
+			})
+			.catch(error => console.log("algo paso", error));
+	}
+	/*____________ PUT _______________*/
+
+	function putTodos() {
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+
+		var raw = JSON.stringify(entradas);
+
+		var requestOptions = {
+			method: "PUT",
+			headers: myHeaders,
+			body: raw,
+			redirect: "follow"
+		};
+
+		fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/todo_leon",
+			requestOptions
+		)
+			.then(response => response.text())
+			.then(result => console.log(result))
+			.catch(error => console.log("error", error));
+	}
+
+	/*____________ Agregar tarea _____________*/
+
+	function agregarTarea() {
+		setEntradas([{ label: inputValue, done: false }, ...entradas]);
+	}
+
+	/*____________ useEffect  _______________*/
+
 	useEffect(() => {
-		console.log(
-			"mi arreglo tiene",
-			entradas.length,
-			"elementos hasta el momento"
-		);
-		console.log(entradas);
-	}, [entradas]);
+		getTodos();
+	}, []);
+
+	/*___________________________*/
 
 	const validateInput = () => {
 		// === STRICT COMPARISON
@@ -25,61 +67,15 @@ const Home = () => {
 		}
 	};
 
-	// === API code
-
-	function mandarTodos() {
-		let data = [
-			{
-				label: "tarea1",
-				done: false
-			},
-			{
-				label: "tarea2",
-				done: false
-			},
-			{
-				label: "tarea3",
-				done: false
-			},
-			{
-				label: "tarea4",
-				done: false
-			},
-			{
-				label: "tarea5",
-				done: false
-			}
-		];
-		let infoNecesaria = {
-			method: "PUT",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-Type": "application/json"
-			}
-		};
-		fetch(
-			"https://assets.breatheco.de/apis/fake/todos/user/todo_leon",
-			infoNecesaria
-		)
-			.then(res => res.json())
-			.then(respuesta => console.log(respuesta))
-			.catch(error => console.log("alog paso", error));
-	}
-	//mandarTodos();
-	function getTodos() {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/todo_leon")
-			.then(res => res.json())
-			.then(respuesta => console.log(respuesta))
-			.catch(error => console.log("alog paso", error));
-	}
-	getTodos();
+	//////////////////////////////////////////////////////
 
 	// === FUNCTION TO HANDLE LIST REMOVAL
 
 	function handleremove(index) {
-		console.log(index);
+		//console.log(index);
 		const newList = entradas.filter(key => key !== index);
 		setEntradas(newList);
+		putTodos();
 	}
 
 	return (
@@ -98,22 +94,25 @@ const Home = () => {
 								onChange={e => setInputValue(e.target.value)}
 								value={inputValue}
 							/>
-
-							<button
-								className="tn btn-info text-white input-group-text"
-								id="basic-addon2"
-								onClick={() => {
-									validateInput();
-									setInputValue("");
-								}}>
-								<i className="fas fa-plus"></i>
-							</button>
+							<div className="input-group-append">
+								<button
+									className="btn btn-info text-sm input-group-text"
+									id="basic-addon2"
+									onClick={() => {
+										validateInput();
+										setInputValue("");
+										agregarTarea();
+										putTodos();
+									}}>
+									<i className="fas fa-plus"></i>
+								</button>
+							</div>
 						</div>
 
 						<ul className="list-group">
 							{entradas.map((index, key) => (
 								<li className="list-group-item" key={key}>
-									{index}{" "}
+									{index.label}
 									<span className="float-right">
 										<button
 											className="btn btn-warning btn-sm"
