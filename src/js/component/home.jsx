@@ -21,27 +21,27 @@ const Home = () => {
 	}
 	/*____________ PUT _______________*/
 
-	function putTodos() {
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
+	//function putTodos() {
+	var myHeaders = new Headers();
+	myHeaders.append("Content-Type", "application/json");
 
-		var raw = JSON.stringify(entradas);
+	var raw = JSON.stringify(entradas);
 
-		var requestOptions = {
-			method: "PUT",
-			headers: myHeaders,
-			body: raw,
-			redirect: "follow"
-		};
+	var requestOptions = {
+		method: "PUT",
+		headers: myHeaders,
+		body: raw,
+		redirect: "follow"
+	};
 
-		fetch(
-			"https://assets.breatheco.de/apis/fake/todos/user/todo_leon",
-			requestOptions
-		)
-			.then(response => response.text())
-			.then(result => console.log(result))
-			.catch(error => console.log("error", error));
-	}
+	fetch(
+		"https://assets.breatheco.de/apis/fake/todos/user/todo_leon",
+		requestOptions
+	)
+		.then(response => response.text())
+		.then(result => console.log(result))
+		.catch(error => console.log("error", error));
+	//}
 
 	/*____________ Agregar tarea _____________*/
 
@@ -75,7 +75,7 @@ const Home = () => {
 		//console.log(index);
 		const newList = entradas.filter(key => key !== index);
 		setEntradas(newList);
-		putTodos();
+		//putTodos();
 	}
 
 	return (
@@ -102,7 +102,6 @@ const Home = () => {
 										validateInput();
 										setInputValue("");
 										agregarTarea();
-										putTodos();
 									}}>
 									<i className="fas fa-plus"></i>
 								</button>
