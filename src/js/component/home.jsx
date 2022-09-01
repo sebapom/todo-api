@@ -11,7 +11,7 @@ const Home = () => {
 	//::::: remember to add the .label from the api object to index {index.label}, to add the list items from the api to the UI ::://
 	//________ getTodos will consume the Api__________//
 	function getTodos() {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/todo_leon")
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/sebapom")
 			.then(respuesta => respuesta.json())
 			.then(respuesta => {
 				console.log(respuesta);
@@ -35,7 +35,7 @@ const Home = () => {
 	};
 
 	fetch(
-		"https://assets.breatheco.de/apis/fake/todos/user/todo_leon",
+		"https://assets.breatheco.de/apis/fake/todos/user/sebapom",
 		requestOptions
 	)
 		.then(response => response.text())
